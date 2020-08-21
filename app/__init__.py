@@ -7,7 +7,7 @@ from flask_script import Manager
 def create_app():
     app = Flask(__name__)
 
-    app.config.from_object('config.Production')
+    app.config.from_object('config.Development')
 
     config_db(app)
     config_ma(app)

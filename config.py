@@ -7,7 +7,7 @@ class Config(object):
 	DEBUG = False
 	TESTING = False
 
-class Production(Config):
+class Development(Config):
     DEBUG = True
     basedir = os.path.abspath(os.path.dirname(__file__))
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mercadin.db')

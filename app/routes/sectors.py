@@ -23,10 +23,11 @@ def insert_sector():
         ss = SectionSchema()
 
         sector = Sectors(**request.json)
+
         db.session.add(sector)
         db.session.commit()
 
-        json = {'Data':ss.dump(sector), 'Message':'Added sector successfully!'}
+        json = {'Data':ss.dump(sector), 'Message':'Sector added successfully!'}
 
         return jsonify(json), 201
 
@@ -45,17 +46,17 @@ def delete_sector(id):
         ss = SectionSchema()
 
         sector = Sectors.query.get(id)
+
         db.session.delete(sector)
         db.session.commit()
 
-        json = {'Data':ss.dumps(sector), 'Message':'Deleted sector successfully!'}
+        json = {'Data':ss.dumps(sector), 'Message':'Sector deleted successfully!'}
 
         return jsonify(json), 200
 
     except UnmappedInstanceError:
         json = {'Message':'Sector already deleted!'}
         return jsonify(json), 410
-
 
 
 @sec.route('/<int:id>', methods=['PUT'])
@@ -66,12 +67,13 @@ def update_sector(id: int):
         sector.name = request.json['name']
 
         db.session.commit()
-        json = {'Data':ss.dump(sector), 'Message':'Updated sector successfully!'}
+
+        json = {'Data':ss.dump(sector), 'Message':'Sector updated successfully!'}
 
         return jsonify(json), 200
 
     except AttributeError:
-        json = {'Message':'Enable to find sector!'}
+        json = {'Message':'Unable to find sector!'}
         return jsonify(json), 404
 
     except IntegrityErrors:
