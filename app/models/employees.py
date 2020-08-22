@@ -1,12 +1,13 @@
 from app.models import db
-from .carts import Carts
+from .sales import Sales
 
 class Employees(db.Model):
     __tablename__ = 'employees'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     position = db.Column(db.String)
-    cart = db.relationship(Carts, backref='employees')
+    sales = db.relationship(Sales, backref='employees')
+    cart = db.Column(db.Integer, db.ForeignKey('carts.id'))
 
     def __init__(self, name, position):
         self.name = name
