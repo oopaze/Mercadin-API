@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, jsonify, request
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlalchemy.exc import IntegrityError
 from app.models.schemas import SectionSchema
@@ -9,6 +9,7 @@ sec = Blueprint('sectors', __name__)
 
 @sec.route('/', methods=['GET'])
 def show_sector():
+    """ Route that show all sectors in DataBase """
     ss = SectionSchema()
     ss.many = True
 
@@ -19,6 +20,10 @@ def show_sector():
 
 @sec.route('/', methods=['POST'])
 def insert_sector():
+    """
+        Route that allows us to insert sector in a DataBase
+        JSON: {'name': 'sector-name'}
+    """
     try:
         ss = SectionSchema()
 
@@ -35,13 +40,16 @@ def insert_sector():
         json = {'Message':'Invalid Data!'}
         return jsonify(json), 406
 
-    except IntegrityErrors:
+    except IntegrityError:
         json = {'Message':'Sector name already registered!'}
         return jsonify(json), 409
 
 
 @sec.route('/<int:id>', methods=['DELETE'])
 def delete_sector(id):
+    """
+        Router that delete a single sector from DataBase by ID
+    """
     try:
         ss = SectionSchema()
 
@@ -55,12 +63,16 @@ def delete_sector(id):
         return jsonify(json), 200
 
     except UnmappedInstanceError:
-        json = {'Message':'Sector already deleted!'}
-        return jsonify(json), 410
+        json = {'Message':'Sector element not found!'}
+        return jsonify(json), 404
 
 
 @sec.route('/<int:id>', methods=['PUT'])
 def update_sector(id: int):
+    """
+        Router that update a sector from DataBase by ID
+        JSON: {'name': 'new-name'}
+    """
     try:
         ss = SectionSchema()
         sector = Sectors.query.get(id)
@@ -76,6 +88,6 @@ def update_sector(id: int):
         json = {'Message':'Unable to find sector!'}
         return jsonify(json), 404
 
-    except IntegrityErrors:
+    except IntegrityError:
         json = {'Message':'Sector name already registered!'}
         return jsonify(json), 409

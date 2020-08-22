@@ -10,4 +10,4 @@ class ProductsSchema(ma.SQLAlchemyAutoSchema):
 class SectionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Sectors
-        fields = ('name', )
+        fields = ('id', 'name')
