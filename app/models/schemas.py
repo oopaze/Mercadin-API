@@ -17,7 +17,7 @@ class ProductsSchema(ma.SQLAlchemyAutoSchema):
 class SectionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Sectors
-        fields = ('id', 'name', 'slug', 'products')
+        fields = ('id', 'name', 'slug')
 
 class CartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
