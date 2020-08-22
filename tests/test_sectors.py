@@ -1,6 +1,6 @@
 import random
 
-sectors_id = []
+sectors_slug = []
 
 def test_show_sector(client):
     """
@@ -19,7 +19,7 @@ def test_insert_sector(client):
     json = {'name': 'test1'}
     response = client.post('/sectors/', json=json)
 
-    sectors_id.append(response.json['Data']['id'])
+    sectors_slug.append(response.json['Data']['slug'])
 
     assert response.status_code == 201
 
@@ -52,7 +52,8 @@ def test_update_sector(client):
             /sectors/{item_id}
     """
     json = {'name': 'test2'}
-    response = client.put(f'/sectors/{sectors_id[0]}', json=json)
+    response = client.put(f'/sectors/{sectors_slug[0]}', json=json)
+    sectors_slug[0] = response.json['Data']['slug']
 
     assert response.status_code == 200
 
@@ -64,10 +65,10 @@ def test_update_unexistent_sector(client):
         To:
             /sectors/{an existent id}
     """
-    unexistent_id = 100
+    unexistent_slug = 'aushaushaushahsahush'
     json = {'name': 'test2'}
 
-    response = client.put(f'/sectors/{unexistent_id}', json=json)
+    response = client.put(f'/sectors/{unexistent_slug}', json=json)
 
     assert response.status_code == 404
 
@@ -80,9 +81,9 @@ def test_update_values_conflicts(client):
     json = {'name': 'test1'}
 
     response = client.post('/sectors/', json=json)
-    sectors_id.append(response.json['Data']['id'])
+    sectors_slug.append(response.json['Data']['slug'])
 
-    response = client.put(f'/sectors/{sectors_id[0]}', json=json)
+    response = client.put(f'/sectors/{sectors_slug[0]}', json=json)
 
     assert response.status_code == 409
 
@@ -92,8 +93,8 @@ def test_delete_sector(client):
         Deleting both sector created on tests
     """
 
-    response = client.delete(f'/sectors/{sectors_id[0]}')
-    response = client.delete(f'/sectors/{sectors_id[1]}')
+    response = client.delete(f'/sectors/{sectors_slug[0]}')
+    response = client.delete(f'/sectors/{sectors_slug[1]}')
 
     response.status_code == 200
 
@@ -101,6 +102,6 @@ def test_delete_unexistent_sector(client):
     """
         Testing delete error: Delete an unexistent sector
     """
-    response = client.delete(f'/sectors/{sectors_id[0]}')
+    response = client.delete(f'/sectors/{sectors_slug[0]}')
 
     response.status_code == 404

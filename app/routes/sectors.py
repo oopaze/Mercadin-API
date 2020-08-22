@@ -17,6 +17,20 @@ def show_sector():
 
     return ss.jsonify(sector), 200
 
+@sec.route('/<string:slug>', methods=['GET'])
+def show_prod_for_sector(slug):
+    """ Route that show the products of a sector """
+    try:
+        ss = SectionSchema()
+        ss.many = True
+
+        sector = Sectors.query.filter_by(slug=slug).first()
+
+        return ss.jsonify(sector.products), 200
+
+    except AttributeError:
+        json = {'Message':'Unable to find sector!'}
+        return jsonify(json), 404
 
 @sec.route('/', methods=['POST'])
 def insert_sector():
@@ -45,15 +59,15 @@ def insert_sector():
         return jsonify(json), 409
 
 
-@sec.route('/<int:id>', methods=['DELETE'])
-def delete_sector(id):
+@sec.route('/<string:slug>', methods=['DELETE'])
+def delete_sector(slug):
     """
         Router that delete a single sector from DataBase by ID
     """
     try:
         ss = SectionSchema()
 
-        sector = Sectors.query.get(id)
+        sector = Sectors.query.filter_by(slug=slug).first()
 
         db.session.delete(sector)
         db.session.commit()
@@ -67,16 +81,17 @@ def delete_sector(id):
         return jsonify(json), 404
 
 
-@sec.route('/<int:id>', methods=['PUT'])
-def update_sector(id: int):
+@sec.route('/<string:slug>', methods=['PUT'])
+def update_sector(slug):
     """
         Router that update a sector from DataBase by ID
         JSON: {'name': 'new-name'}
     """
     try:
         ss = SectionSchema()
-        sector = Sectors.query.get(id)
+        sector = Sectors.query.filter_by(slug=slug).first()
         sector.name = request.json['name']
+        sector.slug = request.json['name'].replace(' ', '_').lower()
 
         db.session.commit()
 
