@@ -9,6 +9,9 @@ cart = Blueprint('carts', __name__)
 @cart.route('/<int:id>', methods=['GET'])
 @cart.route('/', methods=['GET'])
 def show_carts(id = None):
+    """
+        Route that provides all carts in DB
+    """
     try:
         cs = CartSchema(many=True)
 
@@ -31,6 +34,10 @@ def show_carts(id = None):
 
 @cart.route('/', methods=['POST'])
 def insert_cart():
+    """
+        Route insert cart without need
+        any data
+    """
     cs = CartSchema()
     cart = Carts()
 
@@ -42,7 +49,13 @@ def insert_cart():
 
 @cart.route('/<int:id>', methods=['POST'])
 def add_product_to_cart(id):
+    """
+        Route that allows us insert product
+        into the cart just receiving a JSON like:
+            {'product_id': <id of the product>}
+    """
     try:
+        
         cs = CartSchema()
 
         cart = Carts.query.get(id)
@@ -60,6 +73,11 @@ def add_product_to_cart(id):
 
 @cart.route('/<int:cart_id>/<int:product_id>', methods=['DELETE'])
 def delete_product_of_cart(cart_id, product_id):
+    """
+        Route that allow us to delete a product of a cart
+        receiving on url params the card id and the product id
+        in a front 'url/<card id>/<product id>'
+    """
     try:
         cs = CartSchema()
 
@@ -77,6 +95,9 @@ def delete_product_of_cart(cart_id, product_id):
 
 @cart.route('/<int:id>', methods=['DELETE'])
 def delete_cart(id):
+    """
+        Route that allows us delete a cart
+    """
     try:
         cs = CartSchema()
 
