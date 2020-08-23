@@ -1,6 +1,7 @@
 from app.models.schemas import CartSchema, ProductsSchema
-from app.models.products import Products
 from flask import Blueprint, request, jsonify
+from sqlalchemy.orm.exc import FlushError
+from app.models.products import Products
 from app.models.carts import Carts
 from app.models import db
 
@@ -44,7 +45,9 @@ def insert_cart():
     db.session.add(cart)
     db.session.commit()
 
-    return cs.jsonify(cart), 201
+    json = {'Data': cs.dump(cart), 'Message':'Cart created sucessfully!'}
+
+    return jsonify(json), 201
 
 
 @cart.route('/<int:id>', methods=['POST'])
@@ -55,7 +58,7 @@ def add_product_to_cart(id):
             {'product_id': <id of the product>}
     """
     try:
-        
+
         cs = CartSchema()
 
         cart = Carts.query.get(id)
@@ -67,8 +70,8 @@ def add_product_to_cart(id):
 
         return cs.jsonify(cart), 201
 
-    except AttributeError:
-        json = {'Message':'Unable to find cart!'}
+    except (AttributeError, FlushError):
+        json = {'Message':'Unable to find cart or product!'}
         return jsonify(json), 404
 
 @cart.route('/<int:cart_id>/<int:product_id>', methods=['DELETE'])
@@ -107,10 +110,6 @@ def delete_cart(id):
         db.session.commit()
 
         return cs.jsonify(cart), 200
-
-    except IndexError:
-        json = {'Message':'No product has been found!'}
-        return jsonify(json), 406
 
     except AttributeError:
         json = {'Message':'Unable to find cart!'}

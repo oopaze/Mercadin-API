@@ -44,12 +44,12 @@ def insert_product():
         db.session.add(product)
         db.session.commit()
 
-        json = {'Data':ps.dumps(product), 'Message':'Product insert sucessfully!'}
-
+        json = {'Data':ps.dump(product), 'Message':'Product inserted sucessfully!'}
+        print(json)
         return jsonify(json), 201
 
     except (TypeError, KeyError):
-        json = {'Message':'Invalid Data!'}
+        json = {'Data':{}, 'Message':'Invalid Data!'}
         return jsonify(json), 406
 
 
@@ -76,17 +76,22 @@ def update_product(id):
 
         json = {'Data':ps.dumps(product), 'Message':'Product update sucessfully!'}
 
-        return jsonify(json)
+        return jsonify(json), 200
 
     except AttributeError:
         json = {'Message':'Unable to find product!'}
         return jsonify(json), 404
 
+    except (TypeError, KeyError):
+        json = {'Message':'Invalid Data!'}
+        return jsonify(json), 406
+
+
 @prod.route('/<int:id>/<string:slug>', methods=['PUT'])
 def update_sector_of_product(id, slug):
     """
         Router that move a product of a sector to another sector
-        receivindo on route params the product.id and the new sector's slug
+        receiving on route params the product.id and the new sector's slug
     """
     try:
         ps = ProductsSchema()
@@ -110,9 +115,6 @@ def update_sector_of_product(id, slug):
         json = {'Message':'Unable to find product!'}
         return jsonify(json), 404
 
-    except (TypeError, KeyError):
-        json = {'Message':'Invalid data!'}
-        return jsonify(json), 406
 
 @prod.route('/<int:id>', methods=['DELETE'])
 def delete_product(id):
