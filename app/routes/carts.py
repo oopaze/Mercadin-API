@@ -2,10 +2,11 @@ from app.models.schemas import CartSchema, ProductsSchema
 from flask import Blueprint, request, jsonify
 from sqlalchemy.orm.exc import FlushError
 from app.models.products import Products
-from app.models.carts import Carts
+from app.models.carts import Carts, Cart_Product
 from app.models import db
 
 cart = Blueprint('carts', __name__)
+
 
 @cart.route('/<int:id>', methods=['GET'])
 @cart.route('/', methods=['GET'])
@@ -23,14 +24,14 @@ def show_carts(id = None):
             ps = ProductsSchema(many=True)
             carts = Carts.query.get(id)
             json = cs.dump(carts)
-            json['products'] = ps.dump(carts.products)
+            json['products'] = ps.dump([product.product for product in carts.products])
 
             return jsonify(json), 200
 
         return cs.jsonify(carts), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find cart!'}
+        json = {'message':'Unable to find cart!'}
         return jsonify(json), 404
 
 @cart.route('/', methods=['POST'])
@@ -45,7 +46,7 @@ def insert_cart():
     db.session.add(cart)
     db.session.commit()
 
-    json = {'Data': cs.dump(cart), 'Message':'Cart created sucessfully!'}
+    json = {'data': cs.dump(cart), 'message':'Cart created sucessfully!'}
 
     return jsonify(json), 201
 
@@ -55,23 +56,30 @@ def add_product_to_cart(id):
     """
         Route that allows us insert product
         into the cart just receiving a JSON like:
-            {'product_id': <id of the product>}
+            {'product_id': <id of the product>,
+             'product_amount': <amount of products>}
     """
     try:
-
+        data = request.json['data']
         cs = CartSchema()
 
         cart = Carts.query.get(id)
-        product = Products.query.get(request.json['product_id'])
 
-        cart.products.append(product)
+        product = Products.query.get(data['product_id'])
 
+        for i in range(data['product_amount']):
+            card_product = Cart_Product(product)
+            cart.products.append(card_product)
+
+        db.session.commit()
+
+        cart.calculate_total_price()
         db.session.commit()
 
         return cs.jsonify(cart), 201
 
     except (AttributeError, FlushError):
-        json = {'Message':'Unable to find cart or product!'}
+        json = {'message':'Unable to find cart or product!'}
         return jsonify(json), 404
 
 @cart.route('/<int:cart_id>/<int:product_id>', methods=['DELETE'])
@@ -82,6 +90,7 @@ def delete_product_of_cart(cart_id, product_id):
         in a front 'url/<card id>/<product id>'
     """
     try:
+        print(cart_id, product_id)
         cs = CartSchema()
 
         cart = Carts.query.get(cart_id)
@@ -92,8 +101,8 @@ def delete_product_of_cart(cart_id, product_id):
 
         return cs.jsonify(cart), 200
 
-    except AttributeError:
-        json = {'Message':'Unable to find cart or product!'}
+    except (AttributeError, IndexError):
+        json = {'message':'Unable to find cart or product!'}
         return jsonify(json), 404
 
 @cart.route('/<int:id>', methods=['DELETE'])
@@ -112,5 +121,5 @@ def delete_cart(id):
         return cs.jsonify(cart), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find cart!'}
+        json = {'message':'Unable to find cart!'}
         return jsonify(json), 404

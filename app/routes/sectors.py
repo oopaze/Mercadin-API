@@ -7,6 +7,7 @@ from app.models import db
 
 sec = Blueprint('sectors', __name__)
 
+
 @sec.route('/', methods=['GET'])
 def show_sector():
     """ Route that show all sectors in DataBase """
@@ -29,7 +30,7 @@ def show_prod_for_sector(slug):
         return ss.jsonify(sector.products), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find sector!'}
+        json = {'message':'Unable to find sector!'}
         return jsonify(json), 404
 
 @sec.route('/', methods=['POST'])
@@ -40,22 +41,24 @@ def insert_sector():
     """
     try:
         ss = SectionSchema()
+        data = request.json['data']
 
-        sector = Sectors(**request.json)
+        sector = Sectors(**data)
 
         db.session.add(sector)
         db.session.commit()
 
-        json = {'Data':ss.dump(sector), 'Message':'Sector added successfully!'}
+        json = {'data':ss.dump(sector), 'message':'Sector added successfully!'}
 
         return jsonify(json), 201
 
     except TypeError:
-        json = {'Message':'Invalid Data!'}
+        print(request, 'uashdaushdaudua')
+        json = {'message':'Invalid Data!'}
         return jsonify(json), 406
 
     except IntegrityError:
-        json = {'Message':'Sector name already registered!'}
+        json = {'message':'Sector name already registered!'}
         return jsonify(json), 409
 
 
@@ -72,12 +75,12 @@ def delete_sector(slug):
         db.session.delete(sector)
         db.session.commit()
 
-        json = {'Data':ss.dumps(sector), 'Message':'Sector deleted successfully!'}
+        json = {'data':ss.dump(sector), 'message':'Sector deleted successfully!'}
 
         return jsonify(json), 200
 
     except UnmappedInstanceError:
-        json = {'Message':'Sector element not found!'}
+        json = {'message':'Sector element not found!'}
         return jsonify(json), 404
 
 
@@ -89,20 +92,22 @@ def update_sector(slug):
     """
     try:
         ss = SectionSchema()
+        data = request.json['data']
+
         sector = Sectors.query.filter_by(slug=slug).first()
-        sector.name = request.json['name']
-        sector.slug = request.json['name'].replace(' ', '_').lower()
+        sector.name = data['name']
+        sector.slug = data['name'].replace(' ', '_').lower()
 
         db.session.commit()
 
-        json = {'Data':ss.dump(sector), 'Message':'Sector updated successfully!'}
+        json = {'data':ss.dump(sector), 'message':'Sector updated successfully!'}
 
         return jsonify(json), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find sector!'}
+        json = {'message':'Unable to find sector!'}
         return jsonify(json), 404
 
     except IntegrityError:
-        json = {'Message':'Sector name already registered!'}
+        json = {'message':'Sector name already registered!'}
         return jsonify(json), 409

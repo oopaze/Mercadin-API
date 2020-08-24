@@ -22,6 +22,32 @@ def show_products(id = None):
 
     return ps.jsonify(products), 200
 
+@prod.route('/many', methods=['POST'])
+def insert_many_products():
+    try:
+        ps = ProductsSchema(many=True)
+        data = request.json['data']
+
+        products = []
+        for i in range(1, len(data)+1):
+            product = data[str(i)]
+
+            product_class = Products(name=product['name'], price=product['price'],
+                               weight=product['weight'], amount=product['amount'])
+            sector = Sectors.query.filter_by(slug=product['sector']).first()
+            sector.products.append(product_class)
+
+            db.session.add(product_class)
+            db.session.commit()
+            products.append(product_class)
+
+        json = {'data':ps.dump(products), 'message':'Products inserted sucessfully!'}
+        return jsonify(json), 201
+
+    except UnmappedInstanceError:#(TypeError, KeyError):
+        json = {'message':'Invalid Data!'}
+        return jsonify(json), 406
+
 
 @prod.route('/', methods=['POST'])
 def insert_product():
@@ -34,7 +60,7 @@ def insert_product():
     """
     try:
         ps = ProductsSchema()
-        data = request.json
+        data = request.json['data']
 
         product = Products(name=data['name'], price=data['price'],
                            weight=data['weight'], amount=data['amount'])
@@ -44,12 +70,11 @@ def insert_product():
         db.session.add(product)
         db.session.commit()
 
-        json = {'Data':ps.dump(product), 'Message':'Product inserted sucessfully!'}
-        print(json)
+        json = {'data':ps.dump(product), 'message':'Product inserted sucessfully!'}
         return jsonify(json), 201
 
     except (TypeError, KeyError):
-        json = {'Data':{}, 'Message':'Invalid Data!'}
+        json = {'message':'Invalid Data!'}
         return jsonify(json), 406
 
 
@@ -64,7 +89,7 @@ def update_product(id):
     try:
         ps = ProductsSchema()
 
-        data = request.json
+        data = request.json['data']
         product = Products.query.get(id)
 
         product.name = data['name']
@@ -74,16 +99,16 @@ def update_product(id):
 
         db.session.commit()
 
-        json = {'Data':ps.dumps(product), 'Message':'Product update sucessfully!'}
+        json = {'data':ps.dump(product), 'message':'Product update sucessfully!'}
 
         return jsonify(json), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find product!'}
+        json = {'message':'Unable to find product!'}
         return jsonify(json), 404
 
     except (TypeError, KeyError):
-        json = {'Message':'Invalid Data!'}
+        json = {'message':'Invalid Data!'}
         return jsonify(json), 406
 
 
@@ -108,11 +133,11 @@ def update_sector_of_product(id, slug):
         db.session.add(newProduct)
         db.session.commit()
 
-        json = {'data':ps.dumps(newProduct), 'Message':'Product sector changed sucessfully!'}
+        json = {'data':ps.dump(newProduct), 'message':'Product sector changed sucessfully!'}
         return jsonify(json), 200
 
     except AttributeError:
-        json = {'Message':'Unable to find product!'}
+        json = {'message':'Unable to find product!'}
         return jsonify(json), 404
 
 
@@ -128,10 +153,10 @@ def delete_product(id):
         db.session.delete(product)
         db.session.commit()
 
-        json = {'Data':ps.dumps(product), 'Message':'Product deleted sucessfully!'}
+        json = {'data':ps.dump(product), 'message':'Product deleted sucessfully!'}
 
         return jsonify(json), 200
 
     except UnmappedInstanceError:
-        json = {'Message':'Product element not found!'}
+        json = {'message':'Product element not found!'}
         return jsonify(json), 404
