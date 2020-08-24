@@ -1,6 +1,7 @@
 from flask import Flask
-from app.models import configure as config_db
-from app.models import configure as config_ma
+from app.models import configure_db as config_db
+from app.models import configure_ma as config_ma
+from app.models import configure_bp as config_bp
 from flask_migrate import Migrate, MigrateCommand
 
 def create_app():
@@ -10,6 +11,7 @@ def create_app():
 
     config_db(app)
     config_ma(app)
+    config_bp(app)
 
     Migrate(app, app.db)
 
