@@ -8,6 +8,7 @@ from app.models import ma
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Employees
+        fields = ('id', 'name', 'registration', 'admin')
 
 class ProductsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -22,7 +23,9 @@ class SectionSchema(ma.SQLAlchemyAutoSchema):
 class CartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Carts
+        fields = ('id', 'total_price')
 
 class SaleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Sales
+        fields = ('id', 'costumer', 'total_price', 'sold_at')
