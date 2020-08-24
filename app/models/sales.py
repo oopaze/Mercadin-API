@@ -20,7 +20,7 @@ class Sales(db.Model):
     __tablename__ = 'sales'
     id = db.Column(db.Integer, primary_key=True)
     customer = db.Column(db.Integer)
-    total_price = db.Column(db.Integer, nullable=True)
+    total_price = db.Column(db.Float, nullable=True)
     products = db.relationship("Sales_product")
 
     salesman = db.Column(db.Integer, db.ForeignKey('employees.id'))
@@ -30,6 +30,16 @@ class Sales(db.Model):
         if costumer:
             self.customer = costumer
         self.total_price = total_price
+
+    def calculate_total_price(self):
+        total_price = 0
+        if self.products:
+            products = [sale_product.product for sale_product in self.products]
+            for product in products:
+                total_price += product.price
+            self.total_price = round(total_price, 4)
+            return {'Message':'Total price updated sucessfuly!'}
+        return {'Message':'Total price is already up-to-date!'}
 
     def __repr__(self):
         return f'<Purchase of {costumer} on {sold_at}>'

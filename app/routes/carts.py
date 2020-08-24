@@ -56,8 +56,10 @@ def add_product_to_cart(id):
     """
         Route that allows us insert product
         into the cart just receiving a JSON like:
-            {'product_id': <id of the product>,
-             'product_amount': <amount of products>}
+            {"data": {
+                'product_id': <id of the product>,
+                'product_amount': <amount of products>}
+            }
     """
     try:
         data = request.json['data']
@@ -95,7 +97,7 @@ def delete_product_of_cart(cart_id, product_id):
 
         cart = Carts.query.get(cart_id)
 
-        product = list(filter(lambda product: product.id == product_id, cart.products))[0]
+        product = list(filter(lambda product: product.product.id == product_id, cart.products))[0]
         cart.products.remove(product)
         db.session.commit()
 

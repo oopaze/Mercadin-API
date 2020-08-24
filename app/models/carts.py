@@ -22,10 +22,11 @@ class Carts(db.Model):
 
 
     def calculate_total_price(self):
+        total_price = 0
         if self.products:
             products = [cart_product.product for cart_product in self.products]
             for product in products:
-                self.total_price += product.price
-            self.total_price = round(self.total_price, 2)
+                total_price += product.price
+            self.total_price = round(total_price, 4)
             return {'Message':'Total price updated sucessfuly!'}
         return {'Message':'Total price is already up-to-date!'}

@@ -24,6 +24,15 @@ def show_products(id = None):
 
 @prod.route('/many', methods=['POST'])
 def insert_many_products():
+    """
+        Route that allow us to insert many products in
+        one request with a JSON like:
+            {'data':
+                "1":{products params},
+                "2":{products params},
+                ...
+            }
+    """
     try:
         ps = ProductsSchema(many=True)
         data = request.json['data']
@@ -54,9 +63,13 @@ def insert_product():
     """
         Router that allow us insert products in DB
         receiving a JSON like:
-            {'name':'product-name', 'price':'product-price',
-             'weight':'product-weight', 'amount':'product-amount',
-             'sector':'sector-slug'}
+            {"data":
+                {
+                'name':'product-name', 'price':'product-price',
+                'weight':'product-weight', 'amount':'product-amount',
+                'sector':'sector-slug'
+                }
+            }
     """
     try:
         ps = ProductsSchema()
@@ -83,8 +96,11 @@ def update_product(id):
     """
         Router that update a product
         receiving a JSON like:
-            {'name':'product-name', 'price':'product-price',
-             'weight':'product-weight', 'amount':'product-amount'}
+            {"data":{
+                'name':'product-name', 'price':'product-price',
+                'weight':'product-weight', 'amount':'product-amount'
+                }
+            }
     """
     try:
         ps = ProductsSchema()

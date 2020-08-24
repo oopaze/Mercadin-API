@@ -10,6 +10,9 @@ emp = Blueprint('employees', __name__)
 @emp.route('/<int:id>', methods=['GET'])
 @emp.route('/', methods=['GET'])
 def show_users(id = None):
+    """
+        Route that show all or one user selected by ID
+    """
     es = EmployeeSchema(many=True)
     cs = CartSchema(many=True)
     ss = SaleSchema(many=True)
@@ -36,123 +39,202 @@ def show_users(id = None):
 def insert_user():
     """
         JSON like:
-            {'name': user complete name, 'password': an password, 'admin': true/false}
+            {"data": {
+                'name': user complete name, 'password': an password, 'admin': true/false}
+            }
     """
-    es = EmployeeSchema()
-    data = request.json['data']
+    try:
+        es = EmployeeSchema()
+        data = request.json['data']
 
-    employee = Employees(data['name'], data['password'], data['admin'])
+        employee = Employees(data['name'], data['password'], data['admin'])
 
-    db.session.add(employee)
-    db.session.commit()
+        db.session.add(employee)
+        db.session.commit()
 
-    employee.registration = employee.id + 1000
+        employee.registration = employee.id + 1000
 
-    db.session.commit()
+        db.session.commit()
 
-    json = {'data':es.dump(employee), 'message':'User created sucessfully!'}
+        json = {'data':es.dump(employee), 'message':'User created sucessfully!'}
 
-    return jsonify(json), 201
+        return jsonify(json), 201
+
+    except (TypeError, KeyError):
+        json = {'message':'Invalid Data!'}
+        return jsonify(json), 406
 
 @emp.route('/<int:employee_id>/new-cart', methods=['POST'])
 def insert_cart_to_employee(employee_id):
-    es = EmployeeSchema()
-    cs = CartSchema()
-    data = request.json['data']
+    """
+        Route that allows a employee have a cart of products
+        receiving a JSON like:
+            {"data": {
+                    "cart_id": id of the cart
+                }
+            }
+    """
+    try:
+        es = EmployeeSchema()
+        cs = CartSchema()
+        data = request.json['data']
 
-    employee = Employees.query.get(employee_id)
-    cart = Carts.query.get(data['cart_id'])
+        employee = Employees.query.get(employee_id)
+        cart = Carts.query.get(data['cart_id'])
 
-    employee.carts.append(cart)
+        employee.carts.append(cart)
 
-    db.session.commit()
+        db.session.commit()
 
-    carts = employee.carts
+        carts = employee.carts
 
-    employee = es.dump(employee)
-    employee['carts'] = cs.dump(carts)
+        employee = es.dump(employee)
+        employee['carts'] = cs.dump(carts)
 
-    json = {'data':employee, 'message':'Product added sucessfully!'}
+        json = {'data':employee, 'message':'Product added sucessfully!'}
 
-    return jsonify(json), 201
+        return jsonify(json), 201
+
+    except (TypeError, KeyError):
+        json = {'message':'Invalid Data!'}
+        return jsonify(json), 406
+
+    except AttributeError:
+        json = {'message':'Unable to employee!'}
+        return jsonify(json), 404
 
 @emp.route('/<int:employee_id>/new-sale', methods=['POST'])
 def make_sale(employee_id):
-    es = EmployeeSchema()
-    ss = SaleSchema()
-    data = request.json['data']
+    """
+        Route that allows us transform a cart in a real sale
+        you can pass nothing and then the sale will be made with the first
+        employee cart, or you can pass a cart_id of the carts that this employee
+        is owner.
+    """
+    try:
+        es = EmployeeSchema()
+        ss = SaleSchema()
 
-    employee = Employees.query.get(employee_id)
-    cart = employee.carts[0]
+        employee = Employees.query.get(employee_id)
+        cart = employee.carts[0]
 
-    if "cart_id" in data:
-        cart = Carts.query.get(data['cart_id'])
+        if "data" in request.json:
+            data = request.json['data']
 
-    cart.calculate_total_price()
+            if "cart_id" in data:
+                cart = Carts.query.get(data['cart_id'])
 
-    sale = Sales(cart.total_price)
-    sale.products = [Sales_product(product.product) for product in cart.products]
-    cart.products = []
-    cart.total_price = 0
+        cart.calculate_total_price()
 
-    db.session.add(sale)
-    db.session.commit()
+        sale = Sales(cart.total_price)
+        sale.products = [Sales_product(product.product) for product in cart.products]
+        cart.products = []
+        cart.total_price = 0
 
-    employee.sales.append(sale)
+        db.session.add(sale)
+        db.session.commit()
 
-    db.session.commit()
+        employee.sales.append(sale)
 
-    sales = employee.sales
-    employee = es.dump(employee)
-    employee['sale'] = ss.dump(sales[-1])
-    json = {'data':employee, 'message':'Product sold sucessfully!'}
+        db.session.commit()
 
-    return jsonify(json), 201
+        sales = employee.sales
+        employee = es.dump(employee)
+        employee['sale'] = ss.dump(sales[-1])
+        json = {'data':employee, 'message':'Product sold sucessfully!'}
+
+        return jsonify(json), 201
+
+    except (TypeError, KeyError):
+        json = {'message':'Invalid Data!'}
+        return jsonify(json), 406
+
+    except AttributeError:
+        json = {'message':'Unable to employee!'}
+        return jsonify(json), 404
 
 @emp.route('/<int:id>', methods=['PUT'])
-def update_user(id):
-    es = EmployeeSchema()
-    data = request.json['data']
+def update_employee(id):
+    """
+        Route that allows update employee
+        receiving a JSON like:
+         {'data': {
+                "name": new name of user,
+                "password": new password of user,
+                "admin": new admin bool
+            }
+         }
+    """
+    try:
+        es = EmployeeSchema()
+        data = request.json['data']
 
-    employee = Employees.query.get(id)
-    employee.name = data['name']
-    employee.password = employee.generate_hash_password(data['password'])
-    employee.admin = data['admin']
+        employee = Employees.query.get(id)
+        employee.name = data['name']
+        employee.password = employee.generate_hash_password(data['password'])
+        employee.admin = data['admin']
 
-    db.session.commit()
+        db.session.commit()
 
-    json = {'data':es.dump(employee), 'message':'User updated sucessfully!'}
+        json = {'data':es.dump(employee), 'message':'User updated sucessfully!'}
 
-    return jsonify(json), 200
+        return jsonify(json), 200
+
+    except (TypeError, KeyError):
+        json = {'message':'Invalid Data!'}
+        return jsonify(json), 406
+
+    except AttributeError:
+        json = {'message':'Unable to employee!'}
+        return jsonify(json), 404
 
 @emp.route('/<int:id>', methods=['DELETE'])
-def delete_user(id):
-    es = EmployeeSchema()
-    employee = Employees.query.get(id)
+def delete_employee(id):
+    """
+        Route that allow us to delete a employee
+        receiving the ID on url params
+    """
+    try:
+        es = EmployeeSchema()
+        employee = Employees.query.get(id)
 
-    db.session.delete(employee)
-    db.session.commit()
+        db.session.delete(employee)
+        db.session.commit()
 
-    json = {'data': es.dump(employee), 'message':'User deleted sucessfully!'}
+        json = {'data': es.dump(employee), 'message':'User deleted sucessfully!'}
 
-    return jsonify(json), 200
+        return jsonify(json), 200
 
-@emp.route('/<int:user_id>/<int:cart_id>', methods=['DELETE'])
-def delete_cart_of_user(user_id, cart_id):
-    es = EmployeeSchema()
-    cs = CartSchema()
-
-    employee = Employees.query.get(id)
-    cart = list(filter(lambda cart: cart.id == cart_id, employee.carts))[0]
-    employee.cart.remove(cart)
-    db.session.commit()
-
-    carts = employee.carts
-
-    employee = es.dump(employee)
-    employee['carts'] = cs.dump(carts)
+    except AttributeError:
+        json = {'message':'Unable to employee!'}
+        return jsonify(json), 404
 
 
-    json = {'data': employee, 'message':'Cart deleted sucessfully!'}
+@emp.route('/<int:employee_id>/<int:cart_id>', methods=['DELETE'])
+def delete_cart_of_employee(employee_id, cart_id):
+    """
+        Route that allows delete a cart of a employee
+        just receiving the employee and cart ID
+    """
+    try:
+        es = EmployeeSchema()
+        cs = CartSchema()
 
-    return jsonify(json), 200
+        employee = Employees.query.get(employee_id)
+        cart = list(filter(lambda cart: cart.id == cart_id, employee.carts))[0]
+        employee.cart.remove(cart)
+        db.session.commit()
+
+        carts = employee.carts
+
+        employee = es.dump(employee)
+        employee['carts'] = cs.dump(carts)
+
+
+        json = {'data': employee, 'message':'Cart deleted sucessfully!'}
+
+        return jsonify(json), 200
+
+    except (AttributeError, IndexError):
+        json = {'message':'Unable to find employee or cart!'}
+        return jsonify(json), 404
