@@ -10,21 +10,21 @@ def test_show_products(client):
 
 @pytest.mark.run(order=15)
 def test_insert_product(client):
-    client.post('/sectors/', json={'name':'test3'})
-    testprod = {'name':'test', 'price':0,
-                'weight':1, 'amount':20, 'sector':'test3'}
+    client.post('/sectors/', json={'data':{'name':'test3'}})
+    testprod = {'data':{'name':'test', 'price':0,
+                'weight':1, 'amount':20, 'sector':'test3'}}
 
     response = client.post('/products/', json=testprod)
 
-    products_id.append(response.json['Data']['id'])
+    products_id.append(response.json['data']['id'])
 
     assert response.status_code == 201
 
 @pytest.mark.run(order=16)
 def test_insert_with_wrong_data(client):
-    testprod = {'nome':'test', 'price':0,
+    testprod = {'data':{'nome':'test', 'price':0,
                 'weight':1, 'amount':20,
-                'sector':'test3'}
+                'sector':'test3'}}
 
     response = client.post('/products/', json=testprod)
 
@@ -32,9 +32,9 @@ def test_insert_with_wrong_data(client):
 
 @pytest.mark.run(order=17)
 def test_update_product(client):
-    testprod = {'name':'test', 'price':0,
+    testprod = {'data':{'name':'test', 'price':0,
                 'weight':1, 'amount':30,
-                'sector':'test3'}
+                'sector':'test3'}}
 
     response = client.put(f'/products/{products_id[0]}', json=testprod)
 
@@ -42,9 +42,9 @@ def test_update_product(client):
 
 @pytest.mark.run(order=18)
 def test_update_unexistent_product(client):
-    testprod = {'name':'test', 'price':0,
+    testprod = {'data':{'name':'test', 'price':0,
                 'weight':1, 'amount':30,
-                'sector':'test3'}
+                'sector':'test3'}}
 
     unexistent_id = -1
     response = client.put(f'/products/{unexistent_id}', json=testprod)
@@ -53,9 +53,9 @@ def test_update_unexistent_product(client):
 
 @pytest.mark.run(order=19)
 def test_update_product_with_wrong_data(client):
-    testprod = {'nome':'test', 'price':0,
+    testprod = {'data':{'nome':'test', 'price':0,
                 'weight':1, 'amount':30,
-                'sector':'test3'}
+                'sector':'test3'}}
 
     response = client.put(f'/products/{products_id[0]}', json=testprod)
 
@@ -64,7 +64,7 @@ def test_update_product_with_wrong_data(client):
 @pytest.mark.run(order=20)
 def test_update_sector_of_product(client):
 
-    client.post('/sectors/', json={'name':'test4'})
+    client.post('/sectors/', json={'data':{'name':'test4'}})
     response = client.put(f'/products/{products_id[0]}/test4')
 
     assert response.status_code == 200
