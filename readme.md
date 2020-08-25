@@ -12,32 +12,32 @@ Para o uso local, é necessário fazer os seguintes passo:
 **Abra o terminal na pasta que deseja trabalhar e rode os seguintes comandos**
 
 ```
-#Para baixar a API:
+Para baixar a API:
   git clone https://github.com/oopaze/Mercadin-API.git
 
-#Entrar na pasta do projeto:
+Entrar na pasta do projeto:
   cd Mercadin-API
 
-#Instalar bibliotecas necessárias:
+Instalar bibliotecas necessárias:
   pip install -r requirements.txt
 
-#Aponte o flask para a aplicação Mercadin-API:
-  #Windows:
+Aponte o flask para a aplicação Mercadin-API:
+  - Windows:
     set FLASK_APP=run.py
 
-  #Linux:
+  - Linux:
     export FLASK_APP=run.py
 
-  #Heroku:
+  - Heroku:
     heroku config:set FLASK_APP=run.py
 
-#Iniciliazar o banco SQLite3:
-  #Local:
+Iniciliazar o banco SQLite3:
+  - Local:
     flask db init
     flask db migrate
     flask db upgrade
 
-  #Heroku:
+  - Heroku:
     heroku run flask db init
     heroku run flask db migrate
     heroku run flask db upgrade
