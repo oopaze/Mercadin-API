@@ -124,12 +124,15 @@ def make_sale(employee_id):
             if "cart_id" in data:
                 cart = Carts.query.get(data['cart_id'])
 
+        employee.carts.remove(cart)
+
         cart.calculate_total_price()
 
         sale = Sales(cart.total_price)
         sale.products = [Sales_product(product.product) for product in cart.products]
         cart.products = []
         cart.total_price = 0
+
 
         db.session.add(sale)
         db.session.commit()
@@ -229,7 +232,6 @@ def delete_cart_of_employee(employee_id, cart_id):
 
         employee = es.dump(employee)
         employee['carts'] = cs.dump(carts)
-
 
         json = {'data': employee, 'message':'Cart deleted sucessfully!'}
 
