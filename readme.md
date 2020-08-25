@@ -40,7 +40,9 @@ Os seguintes endpoints estão configurados
 
 ## Setores
 
-Todo setor é composto por um name, slug porém o campo slug não necessita ser enviado, pois é gerado a partir do name. Para adição/atuaização de um setor, é necessário se enviar um JSON contendo a chave data como por exemplo:
+Todo setor é composto por um name, slug porém o campo slug não necessita ser enviado, pois é gerado a partir do name. Para adição/atuaização de um setor, é necessário se enviar um JSON contendo a chave data
+
+**como por exemplo:**
 ```
   {
     "data": {
@@ -49,7 +51,7 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
   }
 ```
 
-O setor gerado terá os respectivos campos:
+**O setor gerado terá os respectivos campos:**
 ```
   "name": Nome do setor
   "slug": nome_do_setor
@@ -63,7 +65,9 @@ O setor gerado terá os respectivos campos:
 
 ## Produtos
 
-Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data como por exemplo:
+Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data
+
+**como por exemplo:**
   ```
   {
     "data":{
@@ -76,7 +80,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
   }
   ```
 
-O produto gerado terá os respectivos campos:
+**O produto gerado terá os respectivos campos:**
 ```
   "name": nome
   "price": preço
