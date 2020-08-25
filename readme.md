@@ -7,7 +7,7 @@ Atenção: para usar esta API, você pode ou subir o projeto para o Heroku, cria
 
 # Instalação e uso
 
-Para o uso local, é necessário fazer os seguintes passo:
+Par a o uso local, é necessário fazer os seguintes passo:
 
 **Abra o terminal na pasta que deseja trabalhar e rode os seguintes comandos**
 
@@ -29,14 +29,14 @@ Para o uso local, é necessário fazer os seguintes passo:
 
 ### Aponte o flask para a aplicação Mercadin-API:
   #### Windows:
-    ```
+    
       set FLASK_APP=run.py
-    ```
+
 
   #### Linux:
-    ```
+
       export FLASK_APP=run.py
-    ```
+
 
   #### Heroku:
     ```
