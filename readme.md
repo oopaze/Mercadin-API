@@ -144,11 +144,11 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
 ```
 
 - `/products/` - GET - Mostra todos os produtos
-- `/products/:product_id` - GET - Mostra o produto do ID enviado
+- `/products/:id_do_produto` - GET - Mostra o produto do ID enviado
 - `/products/` - POST - Cria um produto
 - `/products/many` - POST - Cria vários produto
-- `/products/:product_id` - PUT - Atualiza o produto de ID enviado
-- `/products/:product_id` - DELETE - Deleta o produto de ID enviado
+- `/products/:id_do_produto` - PUT - Atualiza o produto de ID enviado
+- `/products/:id_do_produto` - DELETE - Deleta o produto de ID enviado
 
 ## Carrinhos
 
@@ -179,11 +179,11 @@ Para a adição de produtos a um carrinho, basta passar um JSON contendo a chave
 ```
 
 - `/carts/` - GET - Mostra todos os carrinhos disponíveis
-- `/carts/:cart_id` - GET - Mostra o carrinho de ID enviado e os produtos que ali estão
+- `/carts/:id_do_carrinho` - GET - Mostra o carrinho de ID enviado e os produtos que ali estão
 - `/carts/` - POST - Cria um carrinho
-- `/carts/:cart_id` - POST - Adiciona produtos ao carrinho
-- `/carts/:cart_id/:product_id` - DELETE - Tira produto de ID enviado do carrinho de ID enviado
-- `/carts/:cart_id` - DELETE - Deleta carrinho de ID enviado
+- `/carts/:id_do_carrinho` - POST - Adiciona produtos ao carrinho
+- `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho de ID enviado
+- `/carts/:id_do_carrinho` - DELETE - Deleta carrinho de ID enviado
 
 ## Funcionários
 
@@ -211,13 +211,13 @@ Todo funcionário é composto por um nome, uma senha e um admin. Para adição/a
 ```
 
 - `/employees/` - GET - Mostra todos os funcionários
-- `/employees/:employee_id` - GET - Mostra dados do funcionário de ID enviado
+- `/employees/:id_do_funcionario` - GET - Mostra dados do funcionário de ID enviado
 - `/employees/` - POST - Cria novo funcionário
-- `/employees/:employee_id/:cart_id/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho de ID enviado
-- `/employees:employee_id/:cart_id/new-sale/` - POST - Transforma o carringo de ID enviado em um venda feita pelo funcionário de ID enviado
-- `/employees/:employee_id` - PUT - Atualiza funcionário de ID enviado
-- `/employees/:employee_id` - DELETE - Deleta funcionário de ID enviado
-- `/employees/:employee_id/:cart_id` - DELETE - Retira do funcionário de ID enviado o carrinho de ID enviado
+- `/employees/:id_do_funcionario/:id_do_carrinho/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho de ID enviado
+- `/employees:id_do_funcionario/:id_do_carrinho/new-sale/` - POST - Transforma o carringo de ID enviado em um venda feita pelo funcionário de ID enviado
+- `/employees/:id_do_funcionario` - PUT - Atualiza funcionário de ID enviado
+- `/employees/:id_do_funcionario` - DELETE - Deleta funcionário de ID enviado
+- `/employees/:id_do_funcionario/:id_do_carrinho` - DELETE - Retira do funcionário de ID enviado o carrinho de ID enviado
 
 ## Vendas
 
@@ -233,6 +233,6 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
 ```
 
 - `/sales/` - GET - Mostra todas as vendas já efetuadas
-- `/sales/:sale_id` - GET - Mostra venda de ID enviado
-- `/sales/:sale_id/:product_id` - DELETE - Retira produto de id enviado da venda de ID enviado
-- `/sales/:sale_id` - DELETE - Deleta venda de ID enviado
+- `/sales/:id_da_venda` - GET - Mostra venda de ID enviado
+- `/sales/:id_da_venda/:id_do_produto` - DELETE - Retira produto de id enviado da venda de ID enviado
+- `/sales/:id_da_venda` - DELETE - Deleta venda de ID enviado
