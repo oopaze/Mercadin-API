@@ -39,8 +39,8 @@ def show_sales(id = None):
         return jsonify(json), 404
 
 
-@sale.route('/<int:sale_id>/product', methods=['DELETE'])
-def delete_product_of_sale(sale_id):
+@sale.route('/<int:sale_id>/<int:product_id>', methods=['DELETE'])
+def delete_product_of_sale(sale_id, product_id):
     """
         Route that delete product of a sale refreshing her
         price automatically, just receiving sales ID
@@ -51,10 +51,9 @@ def delete_product_of_sale(sale_id):
     """
     try:
         ss = SaleSchema()
-        data = request.json['data']
         sale = Sales.query.get(sale_id)
 
-        product = list(filter(lambda product: product.product.id == data['product_id'], sale.products))[0]
+        product = list(filter(lambda product: product.product.id == product_id, sale.products))[0]
         sale.products.remove(product)
         sale.calculate_total_price()
 
