@@ -7,7 +7,7 @@ from flask_migrate import Migrate, MigrateCommand
 def create_app():
     app = Flask(__name__)
 
-    app.config.from_object('config.Development')
+    app.config.from_object('config.Production')
 
     config_db(app)
     config_ma(app)

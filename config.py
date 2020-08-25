@@ -1,4 +1,4 @@
-import os.path
+import os
 
 class Config(object):
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -10,3 +10,9 @@ class Development(Config):
 	DEBUG = True
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mercadin.db')
+
+
+class Production(Config):
+	ENV = 'Production'
+	DEBUG = False
+	SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
