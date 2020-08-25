@@ -12,13 +12,13 @@ Para o uso local, é necessário fazer os seguintes passo:
 **Abra o terminal na pasta que deseja trabalhar e rode os seguintes comandos**
 
 ```
-#Para baixar a API:
+### Para baixar a API:
   git clone https://github.com/oopaze/Mercadin-API.git
 
 #Entrar na pasta do projeto:
   cd Mercadin-API
 
-#Instalar os requirements:
+#Instalar bibliotecas necessários:
   pip install -r requirements.txt
 
 #Aponte o flask para a aplicação Mercadin-API:
