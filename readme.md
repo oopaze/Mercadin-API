@@ -29,7 +29,7 @@ Par a o uso local, é necessário fazer os seguintes passo:
 
 ### Aponte o flask para a aplicação Mercadin-API:
   #### Windows:
-    
+
       set FLASK_APP=run.py
 
 
@@ -39,24 +39,21 @@ Par a o uso local, é necessário fazer os seguintes passo:
 
 
   #### Heroku:
-    ```
+
       heroku config:set FLASK_APP=run.py
-    ```
 
 ### Iniciliazar o banco SQLite3:
   #### Local:
-    ```
+
       flask db init
       flask db migrate
       flask db upgrade
-    ```
 
   #### Heroku:
-    ```
+
       heroku run flask db init
       heroku run flask db migrate
       heroku run flask db upgrade
-    ```
 
 ### Rodar a API:
   ```
