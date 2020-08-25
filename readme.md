@@ -179,10 +179,10 @@ Para a adição de produtos a um carrinho, basta passar um JSON contendo a chave
 ```
 
 - `/carts/` - GET - Mostra todos os carrinhos disponíveis
-- `/carts/:id_do_carrinho` - GET - Mostra o carrinho de ID enviado e os produtos que ali estão
+- `/carts/:id_do_carrinho` - GET - Mostra o carrinho de ID enviado e os seus produtos
 - `/carts/` - POST - Cria um carrinho
 - `/carts/:id_do_carrinho` - POST - Adiciona produtos ao carrinho
-- `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho de ID enviado
+- `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho
 - `/carts/:id_do_carrinho` - DELETE - Deleta carrinho de ID enviado
 
 ## Funcionários
@@ -213,11 +213,11 @@ Todo funcionário é composto por um nome, uma senha e um admin. Para adição/a
 - `/employees/` - GET - Mostra todos os funcionários
 - `/employees/:id_do_funcionario` - GET - Mostra dados do funcionário de ID enviado
 - `/employees/` - POST - Cria novo funcionário
-- `/employees/:id_do_funcionario/:id_do_carrinho/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho de ID enviado
-- `/employees:id_do_funcionario/:id_do_carrinho/new-sale/` - POST - Transforma o carringo de ID enviado em um venda feita pelo funcionário de ID enviado
+- `/employees/:id_do_funcionario/:id_do_carrinho/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho
+- `/employees:id_do_funcionario/:id_do_carrinho/new-sale/` - POST - Transforma o carrinho em uma venda feita pelo funcionário de ID enviado
 - `/employees/:id_do_funcionario` - PUT - Atualiza funcionário de ID enviado
 - `/employees/:id_do_funcionario` - DELETE - Deleta funcionário de ID enviado
-- `/employees/:id_do_funcionario/:id_do_carrinho` - DELETE - Retira do funcionário de ID enviado o carrinho de ID enviado
+- `/employees/:id_do_funcionario/:id_do_carrinho` - DELETE - Retira do funcionário de ID enviado o carrinho
 
 ## Vendas
 
@@ -234,5 +234,5 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
 
 - `/sales/` - GET - Mostra todas as vendas já efetuadas
 - `/sales/:id_da_venda` - GET - Mostra venda de ID enviado
-- `/sales/:id_da_venda/:id_do_produto` - DELETE - Retira produto de id enviado da venda de ID enviado
+- `/sales/:id_da_venda/:id_do_produto` - DELETE - Retira produto de id enviado da venda
 - `/sales/:id_da_venda` - DELETE - Deleta venda de ID enviado
