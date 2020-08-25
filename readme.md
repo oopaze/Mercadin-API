@@ -22,7 +22,7 @@ Par a o uso local, é necessário fazer os seguintes passo:
   cd Mercadin-API
 ```
 
-### Instalar bibliotecas necessários:
+### Instalar bibliotecas necessárias:
 ```
   pip install -r requirements.txt
 ```
