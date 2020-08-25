@@ -82,8 +82,8 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
     "data": {
       "name": Nome do setor
     }
-  }
 ```
+}
 
 **O setor gerado terá os respectivos campos:**
 ```
@@ -231,20 +231,8 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
   "sold_at": Data da compra -> DateTime
 ```
 
-Para deletar um produto de uma venda é necessário enviar um JSON contendo o campo data com o campo "product_id"
-
-**Como por exemplo:**
-```
-  {
-    "data":{
-      "product_id": ID do produto que deseja deletar da venda
-    }
-  }
-```
-*OBS: O preço total será automaticamente alterado!*
-
-
 - `/sales/` - GET - Mostra todas as vendas já efetuadas
 - `/sales/:sale_id` - GET - Mostra venda de ID enviado
-- `/sales/:sale_id/product` - DELETE - Retira produto de id enviado da venda de ID enviado
-- `/sales/:sale_id` - DELETE - Deleta venda de ID enviado 
+- `/sales/:sale_id/:product_id` - DELETE - Retira produto de id enviado da venda de ID enviado
+        *OBS: O preço total será automaticamente alterado!*
+- `/sales/:sale_id` - DELETE - Deleta venda de ID enviado
