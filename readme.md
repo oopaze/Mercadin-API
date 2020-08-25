@@ -235,5 +235,5 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
 - `/sales/:sale_id` - GET - Mostra venda de ID enviado
 - `/sales/:sale_id/:product_id` - DELETE - Retira produto de id enviado da venda de ID enviado
 
-        *OBS: O preço total será automaticamente alterado!*
+*OBS: O preço total será automaticamente alterado!*
 - `/sales/:sale_id` - DELETE - Deleta venda de ID enviado
