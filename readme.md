@@ -161,7 +161,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
 - `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho
 - `/carts/:id_do_carrinho` - DELETE - Deleta carrinho de ID enviado
 
-Todo carrinho é composto por um preço total, os produtos e um dono, porém o carrinho é inicializado vazio, mas vai se alterando ao longo do processo. Para adição de um carrinho, não é necessário a chave data no JSON.
+Todo carrinho é composto por um preço total, os produtos e um dono, porém o carrinho é inicializado vazio e vai sendo alterando ao longo do processo. Para adição de um carrinho, não é necessário a chave data no JSON e nem mesmo um JSON.
 
 **Como por exemplo:**
 ```
