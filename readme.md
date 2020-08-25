@@ -102,8 +102,8 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
 Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data com as chaves "name", "price", "weight", "amount", "sector"
 
 **como por exemplo:**
-  ```
-  #Se um produto
+  ### Se um produto
+
       {
         "data":{
           "name": nome do produto -> String
@@ -114,7 +114,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
         }
       }
 
-  #Se mais que um:
+  ### Se mais que um:
     {
       "data":{
         "1":{
@@ -133,7 +133,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
         }
       }
     }
-  ```
+  
 
 **O produto gerado terá os respectivos campos:**
 ```
