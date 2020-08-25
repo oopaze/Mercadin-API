@@ -74,8 +74,8 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
     "data": {
       "name": Nome do setor
     }
+  }
 ```
-}
 
 **O setor gerado terá os respectivos campos:**
 ```
