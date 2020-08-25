@@ -74,6 +74,12 @@ Os seguintes endpoints estão configurados
 
 ## Setores
 
+- `/sectors/` - GET - Mostra todos os setores
+- `/sectors/:slug` - GET - Mostra o setor de slug enviado e os produtos contidos no mesmo
+- `/sectors/` - POST - Cria um setor
+- `/sectors/:slug` - PUT - Atualiza o setor de slug enviado
+- `/sectors/:slug` - DELETE - Deleta um setor de slug enviado
+
 Todo setor é composto por um name, slug porém o campo slug não necessita ser enviado, pois é gerado a partir do name. Para adição/atuaização de um setor, é necessário se enviar um JSON contendo a chave data com o campo "name"
 
 **como por exemplo:**
@@ -91,13 +97,15 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
   "slug": nome_do_setor
 ```
 
-- `/sectors/` - GET - Mostra todos os setores
-- `/sectors/:slug` - GET - Mostra o setor de slug enviado e os produtos contidos no mesmo
-- `/sectors/` - POST - Cria um setor
-- `/sectors/:slug` - PUT - Atualiza o setor de slug enviado
-- `/sectors/:slug` - DELETE - Deleta um setor de slug enviado
 
 ## Produtos
+
+- `/products/` - GET - Mostra todos os produtos
+- `/products/:id_do_produto` - GET - Mostra o produto do ID enviado
+- `/products/` - POST - Cria um produto
+- `/products/many` - POST - Cria vários produto
+- `/products/:id_do_produto` - PUT - Atualiza o produto de ID enviado
+- `/products/:id_do_produto` - DELETE - Deleta o produto de ID enviado
 
 Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data com as chaves "name", "price", "weight", "amount", "sector"
 
@@ -133,7 +141,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
         }
       }
     }
-  
+
 
 **O produto gerado terá os respectivos campos:**
 ```
@@ -143,14 +151,15 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
   "amount": quantidade
 ```
 
-- `/products/` - GET - Mostra todos os produtos
-- `/products/:id_do_produto` - GET - Mostra o produto do ID enviado
-- `/products/` - POST - Cria um produto
-- `/products/many` - POST - Cria vários produto
-- `/products/:id_do_produto` - PUT - Atualiza o produto de ID enviado
-- `/products/:id_do_produto` - DELETE - Deleta o produto de ID enviado
 
 ## Carrinhos
+
+- `/carts/` - GET - Mostra todos os carrinhos disponíveis
+- `/carts/:id_do_carrinho` - GET - Mostra o carrinho de ID enviado e os seus produtos
+- `/carts/` - POST - Cria um carrinho
+- `/carts/:id_do_carrinho` - POST - Adiciona produtos ao carrinho
+- `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho
+- `/carts/:id_do_carrinho` - DELETE - Deleta carrinho de ID enviado
 
 Todo carrinho é composto por um preço total, os produtos e um dono, porém o carrinho é inicializado vazio, mas vai se alterando ao longo do processo. Para adição de um carrinho, não é necessário a chave data no JSON.
 
@@ -178,14 +187,17 @@ Para a adição de produtos a um carrinho, basta passar um JSON contendo a chave
   }
 ```
 
-- `/carts/` - GET - Mostra todos os carrinhos disponíveis
-- `/carts/:id_do_carrinho` - GET - Mostra o carrinho de ID enviado e os seus produtos
-- `/carts/` - POST - Cria um carrinho
-- `/carts/:id_do_carrinho` - POST - Adiciona produtos ao carrinho
-- `/carts/:id_do_carrinho/:id_do_produto` - DELETE - Tira produto de ID enviado do carrinho
-- `/carts/:id_do_carrinho` - DELETE - Deleta carrinho de ID enviado
 
 ## Funcionários
+
+- `/employees/` - GET - Mostra todos os funcionários
+- `/employees/:id_do_funcionario` - GET - Mostra dados do funcionário de ID enviado
+- `/employees/` - POST - Cria novo funcionário
+- `/employees/:id_do_funcionario/:id_do_carrinho/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho
+- `/employees:id_do_funcionario/:id_do_carrinho/new-sale/` - POST - Transforma o carrinho em uma venda feita pelo funcionário de ID enviado
+- `/employees/:id_do_funcionario` - PUT - Atualiza funcionário de ID enviado
+- `/employees/:id_do_funcionario` - DELETE - Deleta funcionário de ID enviado
+- `/employees/:id_do_funcionario/:id_do_carrinho` - DELETE - Retira do funcionário de ID enviado o carrinho
 
 Todo funcionário é composto por um nome, uma senha e um admin. Para adição/atualização de um funcionário é necessário o envio de um JSON contendo a chave data com os campos "name", "password", "admin"
 
@@ -210,16 +222,13 @@ Todo funcionário é composto por um nome, uma senha e um admin. Para adição/a
   "sales": todas as vendas feitas pelo funcionário -> Sales
 ```
 
-- `/employees/` - GET - Mostra todos os funcionários
-- `/employees/:id_do_funcionario` - GET - Mostra dados do funcionário de ID enviado
-- `/employees/` - POST - Cria novo funcionário
-- `/employees/:id_do_funcionario/:id_do_carrinho/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho
-- `/employees:id_do_funcionario/:id_do_carrinho/new-sale/` - POST - Transforma o carrinho em uma venda feita pelo funcionário de ID enviado
-- `/employees/:id_do_funcionario` - PUT - Atualiza funcionário de ID enviado
-- `/employees/:id_do_funcionario` - DELETE - Deleta funcionário de ID enviado
-- `/employees/:id_do_funcionario/:id_do_carrinho` - DELETE - Retira do funcionário de ID enviado o carrinho
 
 ## Vendas
+
+- `/sales/` - GET - Mostra todas as vendas já efetuadas
+- `/sales/:id_da_venda` - GET - Mostra venda de ID enviado
+- `/sales/:id_da_venda/:id_do_produto` - DELETE - Retira produto de id enviado da venda
+- `/sales/:id_da_venda` - DELETE - Deleta venda de ID enviado
 
 Toda venda é composta por um cliente(argumento opcional), um preço total, produtos, um vendedor e data de quando foi efetuada. No entanto a adição de uma venda não está disponível por meios diretos. Seguindo fluxo de venda, toda venda deve ser derivada de um carrinho e gerada por um funcionário. O único campo que pode mutável(deletado) diretamente são os seus produtos.
 
@@ -231,8 +240,3 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
   "salesman": Funcionário que vendeu -> Employees
   "sold_at": Data da compra -> DateTime
 ```
-
-- `/sales/` - GET - Mostra todas as vendas já efetuadas
-- `/sales/:id_da_venda` - GET - Mostra venda de ID enviado
-- `/sales/:id_da_venda/:id_do_produto` - DELETE - Retira produto de id enviado da venda
-- `/sales/:id_da_venda` - DELETE - Deleta venda de ID enviado
