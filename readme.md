@@ -48,7 +48,7 @@ Os seguintes endpoints estão configurados
 
 ## Setores
 
-Todo setor é composto por um name, slug porém o campo slug não necessita ser enviado, pois é gerado a partir do name. Para adição/atuaização de um setor, é necessário se enviar um JSON contendo a chave data
+Todo setor é composto por um name, slug porém o campo slug não necessita ser enviado, pois é gerado a partir do name. Para adição/atuaização de um setor, é necessário se enviar um JSON contendo a chave data com o campo "name"
 
 **como por exemplo:**
 ```
@@ -73,7 +73,7 @@ Todo setor é composto por um name, slug porém o campo slug não necessita ser 
 
 ## Produtos
 
-Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data
+Todo produto é composto por um nome, um preço, um peso, um quantidade e um setor. Para adição/atualização de um produto, é necessário se enviar um JSON contendo a chave data com as chaves "name", "price", "weight", "amount", "sector"
 
 **como por exemplo:**
   ```
@@ -120,7 +120,7 @@ Todo produto é composto por um nome, um preço, um peso, um quantidade e um set
 - `/products/` - GET - Mostra todos os produtos
 - `/products/:product_id` - GET - Mostra o produto do ID enviado
 - `/products/` - POST - Cria um produto
-- `/products/many` - POST - Cria um produto
+- `/products/many` - POST - Cria vários produto
 - `/products/:product_id` - PUT - Atualiza o produto de ID enviado
 - `/products/:product_id` - DELETE - Deleta o produto de ID enviado
 
@@ -133,18 +133,31 @@ Todo carrinho é composto por um preço total, os produtos e um dono, porém o c
   {}
 ```
 
-**O carrinho gerado terá os respectivos campos:**
+**O carrinho ficará no seguinte estado:**
 ```
-  "total_price": preço total -> Float
-  "products": todos os produtos adicionados a esse carrinho -> Products
+total_price = preço total -> Int
+owner = ID de um funcionario -> Int
+products = produtos adicionado -> Products
+```
+
+Para a adição de produtos a um carrinho, basta passar um JSON contendo a chave data com os campos "product_id", "product_amount"
+
+**Como por exemplo:**
+```
+  {
+    "data": {
+      "product_id": id do produto a ser adicionado ao carrinho,
+      "product_amount": quantidade do produto a ser adicionado ao carrinho
+    }
+  }
 ```
 
 - `/carts/` - GET - Mostra todos os carrinhos disponíveis
 - `/carts/:cart_id` - GET - Mostra o carrinho de ID enviado e os produtos que ali estão
 - `/carts/` - POST - Cria um carrinho
-- `/carts/` -
-- `/carts/` -
-
+- `/carts/:cart_id` - POST - Adiciona produtos ao carrinho
+- `/carts/:cart_id/:product_id` - DELETE - Deleta produto de ID eviado do carrinho de ID enviado
+- `/carts/:cart_id` - DELETE - Deleta carrinho de ID enviado
 
 ## Funcionários
 ## Vendas
