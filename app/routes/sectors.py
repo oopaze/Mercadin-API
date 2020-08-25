@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, request
+from app.models.schemas import SectionSchema, ProductsSchema
 from sqlalchemy.orm.exc import UnmappedInstanceError
+from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import IntegrityError
-from app.models.schemas import SectionSchema
 from app.models.sectors import Sectors
 from app.models import db
 
@@ -23,11 +23,15 @@ def show_prod_for_sector(slug):
     """ Route that show the products of a sector """
     try:
         ss = SectionSchema()
-        ss.many = True
+        ps = ProductsSchema(many=True)
 
         sector = Sectors.query.filter_by(slug=slug).first()
+        products = sector.products
 
-        return ss.jsonify(sector.products), 200
+        sector = ss.dump(sector)
+        sector['products'] = ps.dump(producst)
+
+        return jsonify(sector), 200
 
     except AttributeError:
         json = {'message':'Unable to find sector!'}
