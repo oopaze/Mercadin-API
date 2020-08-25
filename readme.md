@@ -210,13 +210,14 @@ Todo funcionário é composto por um nome, uma senha e um admin. Para adição/a
   "sales": todas as vendas feitas pelo funcionário -> Sales
 ```
 
-- `/employees/` -
-- `/employees/` -
-- `/employees/` -
-- `/employees/` -
-- `/employees/` -
-- `/employees/` -
-- `/employees/` -
+- `/employees/` - GET - Mostra todos os funcionários
+- `/employees/:employee_id` - GET - Mostra dados do funcionário de ID enviado
+- `/employees/` - POST - Cria novo funcionário
+- `/employees/:employee_id/:cart_id/new-cart` - POST - Adiciona ao funcionário de ID enviado o carrinho de ID enviado
+- `/employees:employee_id/:cart_id/new-sale/` - POST - Transforma o carringo de ID enviado em um venda feita pelo funcionário de ID enviado
+- `/employees/:employee_id` - PUT - Atualiza funcionário de ID enviado
+- `/employees/:employee_id` - DELETE - Deleta funcionário de ID enviado
+- `/employees/:employee_id/:cart_id` - DELETE - Retira do funcionário de ID enviado o carrinho de ID enviado
 
 ## Vendas
 
@@ -234,6 +235,4 @@ Toda venda é composta por um cliente(argumento opcional), um preço total, prod
 - `/sales/` - GET - Mostra todas as vendas já efetuadas
 - `/sales/:sale_id` - GET - Mostra venda de ID enviado
 - `/sales/:sale_id/:product_id` - DELETE - Retira produto de id enviado da venda de ID enviado
-
-*OBS: O preço total será automaticamente alterado!*
 - `/sales/:sale_id` - DELETE - Deleta venda de ID enviado

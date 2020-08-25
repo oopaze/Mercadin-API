@@ -64,8 +64,8 @@ def insert_user():
         json = {'message':'Invalid Data!'}
         return jsonify(json), 406
 
-@emp.route('/<int:employee_id>/new-cart', methods=['POST'])
-def insert_cart_to_employee(employee_id):
+@emp.route('/<int:employee_id>/<int:cart_id>/new-cart', methods=['POST'])
+def insert_cart_to_employee(employee_id, cart_id):
     """
         Route that allows a employee have a cart of products
         receiving a JSON like:
@@ -77,10 +77,9 @@ def insert_cart_to_employee(employee_id):
     try:
         es = EmployeeSchema()
         cs = CartSchema()
-        data = request.json['data']
 
         employee = Employees.query.get(employee_id)
-        cart = Carts.query.get(data['cart_id'])
+        cart = Carts.query.get(cart_id)
 
         employee.carts.append(cart)
 
@@ -103,8 +102,8 @@ def insert_cart_to_employee(employee_id):
         json = {'message':'Unable to employee!'}
         return jsonify(json), 404
 
-@emp.route('/<int:employee_id>/new-sale', methods=['POST'])
-def make_sale(employee_id):
+@emp.route('/<int:employee_id>/<int:cart_id>/new-sale', methods=['POST'])
+def make_sale(employee_id, cart_id = None):
     """
         Route that allows us transform a cart in a real sale
         you can pass nothing and then the sale will be made with the first
@@ -118,11 +117,8 @@ def make_sale(employee_id):
         employee = Employees.query.get(employee_id)
         cart = employee.carts[0]
 
-        if "data" in request.json:
-            data = request.json['data']
-
-            if "cart_id" in data:
-                cart = Carts.query.get(data['cart_id'])
+        if cart_id:
+                cart = Carts.query.get(cart_id)
 
         employee.carts.remove(cart)
 
@@ -156,7 +152,7 @@ def make_sale(employee_id):
         json = {'message':'Unable to employee!'}
         return jsonify(json), 404
 
-@emp.route('/<int:id>', methods=['PUT'])
+@emp.route('/<int:id>/', methods=['PUT'])
 def update_employee(id):
     """
         Route that allows update employee
