@@ -24,19 +24,45 @@ Para o uso local, é necessário fazer os seguintes passo:
 #Aponte o flask para a aplicação Mercadin-API:
   #Windows:
     set FLASK_APP=run.py
+
   #Linux:
     export FLASK_APP=run.py
 
+  #Heroku:
+    heroku config:set FLASK_APP=run.py
+
 #Iniciliazar o banco SQLite3:
-  flask db init
-  flask db migrate
-  flask db upgrade
+  #Local:
+    flask db init
+    flask db migrate
+    flask db upgrade
+
+  #Heroku:
+    heroku run flask db init
+    heroku run flask db migrate
+    heroku run flask db upgrade
 
 #Rodar a API:
   flask run
 ```
 
 Neste ponto a sua API vai está rodando no endereço http://127.0.0.1:5000/
+
+# Funcionamentos
+
+A API no seu total segue uma estrutura de funcionamento.
+
+Para controle de estoque, você será obrigado a manter sempre um produto ligado a um setor, já que API trás modos de acessar produtos setorialmente.
+```
+  setor <-> produtos
+```
+
+Para o controle de vendas, você deverá sempre seguir o fluxo abaixo:
+```
+  produto -> carrinho -> funcionário -> venda
+```
+Sempre se deve lotar carrinhos de produtos, adicionar carrinho ao funcionário e então gerar a venda desse carrinho. Qualquer tentativa de saída do fluxo, poderá ocorrer erro.
+
 
 # Endpoints
 
@@ -156,8 +182,69 @@ Para a adição de produtos a um carrinho, basta passar um JSON contendo a chave
 - `/carts/:cart_id` - GET - Mostra o carrinho de ID enviado e os produtos que ali estão
 - `/carts/` - POST - Cria um carrinho
 - `/carts/:cart_id` - POST - Adiciona produtos ao carrinho
-- `/carts/:cart_id/:product_id` - DELETE - Deleta produto de ID eviado do carrinho de ID enviado
+- `/carts/:cart_id/:product_id` - DELETE - Tira produto de ID enviado do carrinho de ID enviado
 - `/carts/:cart_id` - DELETE - Deleta carrinho de ID enviado
 
 ## Funcionários
+
+Todo funcionário é composto por um nome, uma senha e um admin. Para adição/atualização de um funcionário é necessário o envio de um JSON contendo a chave data com os campos "name", "password", "admin"
+
+**Como por exemplo:**
+```
+  {
+    "data": {
+      "name": nome do funcionário,
+      "password": senha do funcionário,
+      "admin": se o funcionário é administrador
+    }
+  }
+```
+
+**O funcionário gerado terá os respectivos campos:**
+```
+  "name": nome do funcionário -> String
+  "password": hash gerado a partir da senha do funcionário -> Hash
+  "registration": matricula do funcionário -> Int
+  "admin": boolean mostrando se o funcionário é admin -> Boolean
+  "carts": todos os carts adicionados ao funcionário -> Carts
+  "sales": todas as vendas feitas pelo funcionário -> Sales
+```
+
+- `/employees/` -
+- `/employees/` -
+- `/employees/` -
+- `/employees/` -
+- `/employees/` -
+- `/employees/` -
+- `/employees/` -
+
 ## Vendas
+
+Toda venda é composta por um cliente(argumento opcional), um preço total, produtos, um vendedor e data de quando foi efetuada. No entanto a adição de uma venda não está disponível por meios diretos. Seguindo fluxo de venda, toda venda deve ser derivada de um carrinho e gerada por um funcionário. O único campo que pode mutável(deletado) diretamente são os seus produtos.
+
+**A venda gerada terá os respectivos campos:**
+```
+  "costumer": nome do cliente -> String
+  "total_price": preço total da compra -> Float
+  "products": produtos comprados -> Products
+  "salesman": Funcionário que vendeu -> Employees
+  "sold_at": Data da compra -> DateTime
+```
+
+Para deletar um produto de uma venda é necessário enviar um JSON contendo o campo data com o campo "product_id"
+
+**Como por exemplo:**
+```
+  {
+    "data":{
+      "product_id": ID do produto que deseja deletar da venda
+    }
+  }
+```
+*OBS: O preço total será automaticamente alterado!*
+
+
+- `/sales/` - GET - Mostra todas as vendas já efetuadas
+- `/sales/:sale_id` - GET - Mostra venda de ID enviado
+- `/sales/:sale_id/product` - DELETE - Retira produto de id enviado da venda de ID enviado
+- `/sales/:sale_id` - DELETE - Deleta venda de ID enviado 
