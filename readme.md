@@ -5,7 +5,7 @@ o banco de dados de seu mercadinho/mercearia
 
 Atenção: para usar esta API, você pode ou subir o projeto para o Heroku, criando um fork desse projeto e ligando ele a um projeto ou você pode usar ele localmente.
 
-# Instalação e uso
+# Instalação
 
 Para o uso local, é necessário fazer os seguintes passo:
 
@@ -48,7 +48,7 @@ Iniciliazar o banco SQLite3:
 
 Neste ponto a sua API vai está rodando no endereço http://127.0.0.1:5000/
 
-# Funcionamentos
+# Uso
 
 A API no seu total segue uma estrutura de funcionamento.
 
