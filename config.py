@@ -15,4 +15,4 @@ class Development(Config):
 class Production(Config):
 	ENV = 'Production'
 	DEBUG = False
-	SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mercadin.db')
