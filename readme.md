@@ -8,6 +8,7 @@ Atenção: para usar esta API, você pode ou subir o projeto para o Heroku, cria
 # Instalação
 
 Para o uso dessa API, é necessário o python-3.7+
+Se você for usar ela no heroku é necessário instalar o add-on Heroku-Postgres
 
 **Abra o terminal na pasta que deseja trabalhar e rode os seguintes comandos**
 
