@@ -10,11 +10,13 @@ class Config(object):
 class Development(Config):
 	ENV = 'Development'
 	DEBUG = True
+	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mercadin.db')
 
 
 class Production(Config):
 	ENV = 'Production'
 	DEBUG = False
-	os.environ['FLASK_APP'] = os.path.join(basedir, 'run.py')
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	os.environ['FLASK_APP'] = os.path.join(self.basedir, 'run.py')
 	SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mercadin.db')

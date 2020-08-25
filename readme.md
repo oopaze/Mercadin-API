@@ -22,14 +22,6 @@ Entrar na pasta do projeto:
 Instalar bibliotecas necessárias:
   pip install -r requirements.txt
 
-Aponte o flask para a aplicação Mercadin-API:
-  - Windows:
-      set FLASK_APP=run.py
-
-  - Linux:
-      export FLASK_APP=run.py
-
-
 Iniciliazar o banco SQLite3:
     flask db init
     flask db migrate
