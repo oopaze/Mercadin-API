@@ -7,7 +7,7 @@ Atenção: para usar esta API, você pode ou subir o projeto para o Heroku, cria
 
 # Instalação
 
-Para o uso local, é necessário fazer os seguintes passo:
+Para o uso dessa API, é necessário o python-3.7+
 
 **Abra o terminal na pasta que deseja trabalhar e rode os seguintes comandos**
 
@@ -42,7 +42,7 @@ Iniciliazar o banco SQLite3:
       heroku run flask db migrate
       heroku run flask db upgrade
 
-#Rodar a API:
+Rodar a API:
   flask run
 ```
 
