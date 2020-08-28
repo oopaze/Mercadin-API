@@ -61,7 +61,7 @@ Os seguintes endpoints estão configurados
 ## Auth
 Essa rota ainda está em desenvolvimento e o não uso dela não altera o funcionamento da API
 
-- `/` - POST - Gerar uma chave de acesso
+- `/` - POST - Gera uma chave de acesso
 
 Para gerar uma chave de acesso é necessário enviar um JSON contendo os campos registration e password like:
 ```
