@@ -58,6 +58,19 @@ Os seguintes endpoints estão configurados
 
 - `/` - GET
 
+## Auth
+Essa rota ainda está em desenvolvimento e o não uso dela não altera o funcionamento da API
+
+- `/` - POST - Gerar uma chave de acesso
+
+Para gerar uma chave de acesso é necessário enviar um JSON contendo os campos registration e password like:
+```
+  {
+    "registration": sua matricula,
+    "password": sua senha
+  }
+```
+
 ## Setores
 
 - `/sectors/` - GET - Mostra todos os setores
