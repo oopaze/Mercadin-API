@@ -1,17 +1,17 @@
 from flask import Flask
 from app.models import configure_db as config_db
 from app.models import configure_ma as config_ma
-from app.models import configure_bp as config_bp
 from flask_migrate import Migrate, MigrateCommand
+from .auth_config import configure as configure_auth
 
 def create_app():
     app = Flask(__name__)
 
-    app.config.from_object('config.Production')
+    app.config.from_object('config.Development')
 
     config_db(app)
     config_ma(app)
-    config_bp(app)
+    configure_auth(app)
 
     Migrate(app, app.db)
 

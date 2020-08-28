@@ -1,4 +1,5 @@
 from app.models.schemas import EmployeeSchema, CartSchema, SaleSchema
+from flask_jwt import jwt_required, current_identity
 from app.models.employees import Employees
 from app.models.carts import Carts
 from app.models.sales import Sales, Sales_product
@@ -9,6 +10,7 @@ emp = Blueprint('employees', __name__)
 
 @emp.route('/<int:id>', methods=['GET'])
 @emp.route('/', methods=['GET'])
+@jwt_required()
 def show_users(id = None):
     """
         Route that show all or one user selected by ID
@@ -65,6 +67,7 @@ def insert_user():
         return jsonify(json), 406
 
 @emp.route('/<int:employee_id>/<int:cart_id>/new-cart', methods=['POST'])
+@jwt_required()
 def insert_cart_to_employee(employee_id, cart_id):
     """
         Route that allows a employee have a cart of products
@@ -103,6 +106,7 @@ def insert_cart_to_employee(employee_id, cart_id):
         return jsonify(json), 404
 
 @emp.route('/<int:employee_id>/<int:cart_id>/new-sale', methods=['POST'])
+@jwt_required()
 def make_sale(employee_id, cart_id = None):
     """
         Route that allows us transform a cart in a real sale
@@ -153,6 +157,7 @@ def make_sale(employee_id, cart_id = None):
         return jsonify(json), 404
 
 @emp.route('/<int:id>/', methods=['PUT'])
+@jwt_required()
 def update_employee(id):
     """
         Route that allows update employee
@@ -188,6 +193,7 @@ def update_employee(id):
         return jsonify(json), 404
 
 @emp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_employee(id):
     """
         Route that allow us to delete a employee
@@ -210,6 +216,7 @@ def delete_employee(id):
 
 
 @emp.route('/<int:employee_id>/<int:cart_id>', methods=['DELETE'])
+@jwt_required()
 def delete_cart_of_employee(employee_id, cart_id):
     """
         Route that allows delete a cart of a employee

@@ -1,4 +1,5 @@
-from app.models import db, bp
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.models import db
 from .sales import Sales
 from .carts import Carts
 
@@ -24,7 +25,7 @@ class Employees(db.Model):
         return f'<Employee {self.name}>'
 
     def generate_hash_password(self, password):
-        return bp.generate_password_hash(password)
+        return generate_password_hash(password)
 
     def verify_password(self, password):
-        return bp.check_password_hash(self.password, password)
+        return check_password_hash(self.password, password)
